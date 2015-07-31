@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+
+        <parameter key="behat.mink.driver.browser_stack.class">Behat\Mink\Driver\Selenium2Driver</parameter>
+
+        <parameter key="behat.mink.browser_stack.browser">%behat.mink.browser_name%</parameter>
+        <parameter key="behat.mink.browser_stack.capabilities" type="collection">
+            <parameter key="browserName" type="string">firefox</parameter>
+        </parameter>
+        <parameter key="behat.mink.browser_stack.wd_host">https://USERNAME:ACCESS_KEY@ondemand.browser_stack.com/wd/hub</parameter>
+
+    </parameters>
+    <services>
+
+        <service id="behat.mink.session.browser_stack" class="%behat.mink.session.class%">
+            <argument type="service">
+                <service class="%behat.mink.driver.browser_stack.class%">
+                    <argument>%behat.mink.browser_stack.browser%</argument>
+                    <argument>%behat.mink.browser_stack.capabilities%</argument>
+                    <argument>%behat.mink.browser_stack.wd_host%</argument>
+                </service>
+            </argument>
+            <argument type="service" id="behat.mink.selector.handler" />
+            <tag name="behat.mink.session" alias="browser_stack" />
+        </service>
+
+    </services>
+</container>

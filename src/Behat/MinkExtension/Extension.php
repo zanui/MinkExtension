@@ -101,6 +101,36 @@ class Extension implements ExtensionInterface
             $loader->load('sessions/saucelabs.xml');
         }
 
+        if (isset($config['appium'])) {
+            if (!class_exists('Behat\\Mink\\Driver\\Selenium2Driver')) {
+                throw new \RuntimeException(
+                    'CrossBrowserTestingDriver is missing.'
+                );
+            }
+
+            $loader->load('sessions/appium.xml');
+        }
+
+        if (isset($config['cross_browser_testing'])) {
+            if (!class_exists('Behat\\Mink\\Driver\\Selenium2Driver')) {
+                throw new \RuntimeException(
+                    'CrossBrowserTestingDriver is missing.'
+                );
+            }
+
+            $loader->load('sessions/cross_browser_testing.xml');
+        }
+
+        if (isset($config['browser_stack'])) {
+            if (!class_exists('Behat\\Mink\\Driver\\Selenium2Driver')) {
+                throw new \RuntimeException(
+                    'BrowserStackDriver is missing.'
+                );
+            }
+
+            $loader->load('sessions/browser_stack.xml');
+        }
+
         $minkParameters = array();
         foreach ($config as $ns => $tlValue) {
             if (!is_array($tlValue)) {
@@ -398,6 +428,35 @@ class Extension implements ExtensionInterface
                             end()->
                         end()->
                     end()->
+                end()->
+                arrayNode('appium')->
+                    children()->
+                        scalarNode('wd_host')->end()->
+                        scalarNode('browser')->end()->
+                        arrayNode('capabilities')->
+                            normalizeKeys(false)->
+                            prototype('scalar')->end()->
+                    end()->
+                    end()->
+                end()->
+                arrayNode('cross_browser_testing')->
+                    children()->
+                        scalarNode('wd_host')->end()->
+                        scalarNode('browser')->end()->
+                        arrayNode('capabilities')->
+                            normalizeKeys(false)->
+                            prototype('scalar')->end()->
+                        end()->
+                    end()->
+                end()->
+                arrayNode('browser_stack')->
+                    children()->
+                        scalarNode('wd_host')->end()->
+                        scalarNode('browser')->end()->
+                        arrayNode('capabilities')->
+                            normalizeKeys(false)->
+                            prototype('scalar')->end()->
+                        end()->
                 end()->
             end()->
         end();

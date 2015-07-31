@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+
+        <parameter key="behat.mink.driver.cross_browser_testing.class">Behat\Mink\Driver\Selenium2Driver</parameter>
+
+        <parameter key="behat.mink.cross_browser_testing.browser">%behat.mink.browser_name%</parameter>
+        <parameter key="behat.mink.cross_browser_testing.capabilities" type="collection">
+            <parameter key="browserName" type="string">firefox</parameter>
+        </parameter>
+        <parameter key="behat.mink.cross_browser_testing.wd_host">https://USERNAME:ACCESS_KEY@ondemand.cross_browser_testing.com/wd/hub</parameter>
+
+    </parameters>
+    <services>
+
+        <service id="behat.mink.session.cross_browser_testing" class="%behat.mink.session.class%">
+            <argument type="service">
+                <service class="%behat.mink.driver.cross_browser_testing.class%">
+                    <argument>%behat.mink.cross_browser_testing.browser%</argument>
+                    <argument>%behat.mink.cross_browser_testing.capabilities%</argument>
+                    <argument>%behat.mink.cross_browser_testing.wd_host%</argument>
+                </service>
+            </argument>
+            <argument type="service" id="behat.mink.selector.handler" />
+            <tag name="behat.mink.session" alias="cross_browser_testing" />
+        </service>
+
+    </services>
+</container>
